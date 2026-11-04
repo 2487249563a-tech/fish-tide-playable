@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#071b3e" />
+    <meta name="description" content="fish · TapTap 海上航行钓鱼小游戏" />
+    <title>fish · 海上航行</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <section class="splash" id="splash" aria-label="启航画面"><div><h1>潮汐航线</h1><p id="loadingMessage">正在展开海图…</p><button id="startButton" disabled>进入白帆港</button></div></section>
+    <main class="app-shell" hidden>
+      <header class="topbar">
+        <div class="brand-block">
+          <span class="brand-mark">✦</span>
+          <div>
+            <p class="eyebrow">FISHING ODYSSEY</p>
+            <h1>潮汐航线</h1>
+          </div>
+        </div>
+        <button class="icon-button" id="settingsButton" aria-label="打开设置">⚙</button>
+      </header>
+
+      <section class="resource-row" aria-label="资源">
+        <div class="resource-chip stamina-chip">
+          <span class="resource-icon">⚡</span>
+          <div><button class="resource-label stamina-toggle" id="staminaToggle" type="button" aria-label="点击切换体力加倍档位">体力</button><strong id="staminaValue">30/30</strong></div>
+          <button class="mini-action" id="adButton">每日补给 +10</button>
+        </div>
+        <div class="resource-chip coin-chip">
+          <span class="resource-icon">◈</span>
+          <div><span class="resource-label">金币</span><strong id="coinValue">1,280</strong></div>
+        </div>
+      </section>
+
+      <div id="fishPage" class="page">
+      <section class="map-card" aria-label="海图航线">
+        <div class="map-heading">
+          <div>
+            <p class="eyebrow">CURRENT ROUTE · 01</p>
+            <h2 id="routeTitle">浅湾 · 白帆港</h2>
+          </div>
+          <div class="progress-copy"><strong id="fishProgress">18</strong><span id="routeGoal">/ 100 条</span><small>捕鱼进度</small></div>
+        </div>
+        <div class="map-viewport" id="mapViewport">
+          <div class="sun-glow"></div>
+          <div class="island island-a"><span>✦</span></div>
+          <div class="island island-b"><span>♢</span></div>
+          <div class="wave wave-one"></div><div class="wave wave-two"></div>
+          <svg class="route-svg" viewBox="0 0 360 310" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M18 244 C62 204 47 160 91 143 S125 65 164 85 S215 186 245 166 S292 73 340 52" />
+          </svg>
+          <div class="nodes" id="routeNodes"></div>
+          <div class="ship" id="ship" aria-label="当前船只"><span>⛵</span></div>
+          <div class="map-label">航行中 · <span id="nodeLabel">第 4 节点</span></div>
+        </div>
+      </section>
+
+      <section class="event-card" id="eventCard" aria-live="polite">
+        <div class="event-topline"><span class="event-pill" id="eventPill">最近收获</span><span class="event-time" id="eventTime">刚刚</span></div>
+        <div class="event-content" id="eventContent">
+          <div class="event-art common-art"><span>🐟</span></div>
+          <div class="event-copy"><h3 id="eventTitle">月光沙丁鱼入网</h3><p id="eventDescription">准备好出航，海风会把惊喜送到船边。</p><div class="reward-line" id="rewardLine"><span class="rarity-dot white"></span><b>白 · 常见</b><span>+8 条鱼</span></div></div>
+        </div>
+      </section>
+
+      <section class="multiplier-section" aria-label="体力加倍">
+        <div class="section-label"><span>本次奖励加倍</span><small id="multiplierHint">点击顶部“体力”切换</small></div>
+        <div class="multiplier-status" id="multiplierStatus" aria-live="polite">
+          <div><span>当前档位</span><strong id="currentMultiplier">1×</strong></div>
+          <div class="multiplier-next"><span>下一个可切换</span><strong id="nextMultiplier">2×</strong></div>
+          <span class="cycle-hint">↻ 点击体力</span>
+        </div>
+        <p class="multiplier-gate" id="multiplierGate">当前体力可用：1×、2×</p>
+      </section>
+
+      <button class="sail-button" id="sailButton"><span class="sail-icon">➜</span><span><strong>扬帆出航</strong><small>消耗 1 体力 · <b id="buttonMultiplier">1×</b> 收益</small></span><span class="button-arrow">›</span></button>
+      <p class="status-message" id="statusMessage">点击出航，自动沿海图前进</p>
+
+      </div>
+      <section id="crewPage" class="page" hidden aria-label="船员"><h2>船员名册</h2><p class="page-intro">招募伙伴，最多同时上阵 3 人。技能在出航时自动生效。</p><div id="crewList"></div></section>
+      <section id="shipyardPage" class="page" hidden aria-label="船坞"><h2>逐潮号船坞</h2><div id="shipyardContent"></div></section>
+      <section id="shopPage" class="page" hidden aria-label="商店"><h2>星帆商店</h2><p class="page-intro">使用航行所得金币购买补给和装备。</p><div id="shopContent"></div></section>
+      <nav class="bottom-nav" aria-label="主导航">
+        <button class="nav-item active" data-page="fish" aria-current="page"><span>⌁</span><small>寻鱼</small></button>
+        <button class="nav-item" data-page="crew"><span>♙</span><small>船员</small></button>
+        <button class="nav-item" data-page="shipyard"><span>⌂</span><small>船坞</small></button>
+        <button class="nav-item" data-page="shop"><span>◇</span><small>商店</small></button>
+      </nav>
+    </main>
+    <div class="toast" id="toast" role="status"></div>
+    <script type="module" src="./game.js"></script>
+  </body>
+</html>
