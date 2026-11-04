@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>会动的鱼 · 程序微动示例</title>
+<style>
+  :root{color-scheme:dark}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,"PingFang SC",sans-serif;background:
+      radial-gradient(120% 90% at 50% 0%, #0b2a4a 0%, #06182c 55%, #030c18 100%);
+      color:#cfe6ff;min-height:100dvh;overflow:hidden}
+  .wrap{position:relative;height:100dvh;width:100%;overflow:hidden}
+  h1{position:absolute;top:env(safe-area-inset-top,14px);left:0;right:0;text-align:center;
+     font-size:16px;font-weight:600;letter-spacing:1px;opacity:.85;z-index:5;margin-top:14px}
+  .hint{position:absolute;bottom:calc(env(safe-area-inset-bottom,0) + 16px);left:0;right:0;
+        text-align:center;font-size:12px;opacity:.55;z-index:5}
+  /* light rays + water caustics */
+  .rays{position:absolute;inset:0;background:
+     linear-gradient(90deg,transparent 48%,rgba(120,190,255,.06) 50%,transparent 52%) repeat-x;
+     background-size:220px 100%;animation:drift 9s linear infinite;mix-blend-mode:screen}
+  @keyframes drift{to{background-position:220px 0}}
+  .fish{position:absolute;left:50%;top:48%;width:min(62vw,300px);
+        transform-origin:60% 50%;will-change:transform;filter:drop-shadow(0 18px 24px rgba(0,0,0,.45))}
+  .fish img{width:100%;display:block;animation:tail 1.6s ease-in-out infinite;transform-origin:85% 50%}
+  /* body bob + glide path */
+  .fish{animation:swim 6s ease-in-out infinite}
+  @keyframes swim{
+    0%  {transform:translate(-62%,-6px) rotate(-2deg)}
+    25% {transform:translate(-54%, 4px) rotate(1.5deg)}
+    50% {transform:translate(-46%,-4px) rotate(2deg)}
+    75% {transform:translate(-54%, 5px) rotate(-1deg)}
+    100%{transform:translate(-62%,-6px) rotate(-2deg)}
+  }
+  /* tail sway via skew on the image */
+  @keyframes tail{
+    0%,100%{transform:skewY(0deg) scaleY(1)}
+    25%{transform:skewY(2.2deg) scaleY(.985)}
+    50%{transform:skewY(0deg) scaleY(1)}
+    75%{transform:skewY(-2.2deg) scaleY(.985)}
+  }
+  .bubbles b{position:absolute;bottom:-20px;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.9),rgba(160,210,255,.25));
+     border-radius:50%;opacity:.0;animation:rise linear infinite}
+  @keyframes rise{0%{opacity:0;transform:translateY(0) scale(.6)}
+     15%{opacity:.6}100%{opacity:0;transform:translateY(-70dvh) scale(1)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>会动的鱼 · 单张图 + 程序微动</h1>
+  <div class="rays"></div>
+  <div class="fish"><img src="../assets/fish/fish_moon_sardine_white.webp" alt="moon sardine"></div>
+  <div class="bubbles" id="bb"></div>
+  <div class="hint">这是「不额外出帧、只用一张图」的做法示例 · 摆尾+游动+水光+气泡</div>
+</div>
+<script>
+  const bb=document.getElementById('bb');
+  for(let i=0;i<14;i++){const b=document.createElement('b');
+    const s=4+Math.random()*10;b.style.width=b.style.height=s+'px';
+    b.style.left=(Math.random()*100)+'%';
+    b.style.animationDuration=(5+Math.random()*6)+'s';
+    b.style.animationDelay=(Math.random()*6)+'s';bb.appendChild(b);}
+</script>
+</body>
+</html>
